@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="DELETE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl>cf9d01d3e73003009d6247e603f6a990</enforce_acl>
+        <http_method>POST</http_method>
+        <name>UserCreationRequest</name>
+        <operation_script><![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+    // Get data from the form submission
+    var username = request.body.data.username;  // e.g., form field: username
+    var displayName = request.body.data.display_name;  // form field: display_name
+    var email = request.body.data.email;  // form field: email
+
+    // Build the SCIM payload
+    var userData = {
+        schemas: ["urn:ietf:params:scim:schemas:core:2.0:User"],
+        userName: username,
+        displayName: displayName,
+        active: true,
+        emails: [
+            {
+                value: email,
+                type: "work",
+                primary: true
+            }
+        ]
+    };
+
+    // Set up HTTP client and send request
+    var client = new GlideHTTPClient();
+    var url = 'https://earth-apis.my.evidian.com/scim/v2/api/Users';
+    var requestObj = new GlideHTTPRequest('POST', url);
+    
+    // Add the Authorization header with the token
+    var token = 'eyJraWQiOiJyc2EyNTZfc2lnIiwiYWxnIjoiUlMyNTYifQ.eyJhdXRoZW50aWNhdGlvbmxldmVsIjoiMTAiLCJzdWIiOiJld29pYzNWaUlpQTZJQ0poZVcxaGJtVXVhMkZpWW1GQVZYTmxjaUJFYVhKbFkzUnZjbmtpTEFvaWJtRnRaU0lnT2lBaVFYbHRZVzVsSUV0QlFrSkJJaXdLSW1kcGRtVnVYMjVoYldVaUlEb2dJa0Y1YldGdVpTSXNDaUptWVcxcGJIbGZibUZ0WlNJZ09pQWlTMEZDUWtFaUxBb2laVzFoYVd3aUlEb2dJbUY1YldGdVpTNXJZV0ppWVVCbGRtbGtaVzR1WTI5dElpd0tJbXh2WTJGc1pTSWdPaUFpWlc0aUxBb2ljSEpsWm1WeWNtVmtYM1Z6WlhKdVlXMWxJaUE2SUNKaGVXMWhibVV1YTJGaVltRWlMQW9pWjJWdVpHVnlJaUE2SUNKdFlXeGxJaXdLSW1selgyOXBaR05mWVdSdGFXNXBjM1J5WVhSdmNpSWdPaUJtWVd4elpRcDkiLCJhdXRoZW50aWNhdGlvbnBvbGljeW5hbWUiOiJBdXRoZW50aWNhdGlvbiB3aXRoIGNlcnRpZmljYXRlIiwiYXpwIjoiNTMxZGQ2YTUtMzcxYi00NjczLTgxYjMtNDMyYjcwNzEzNTY2Iiwic2NvcGUiOiJhZGRyZXNzIHBob25lIG9wZW5pZCBwcm9maWxlIGVtYWlsIiwiaXNzIjoiaHR0cHM6XC9cL2VhcnRoLWF1dGgubXkuZXZpZGlhbi5jb21cL2Nob2ljZVwvb2lkY1wvIiwiYXV0aGVudGljYXRpb250eXBlbmFtZSI6IkxQRl9QUklNX0FVVEhfQ0VSVElGSUNBVEUiLCJhdXRoZW50aWNhdGlvbnR5cGUiOiIzIiwiaWF0IjoxNzMxOTMzNTYxLCJqdGkiOiI5MGE2OWYwYS0zMzNiLTQ0YmQtYTY4NS1mYTQ2ODJjZjFkY2QifQ.pt39E49E7BqSKxKQ7v-bblrJHsNHxIbZJ0QMl_QqOqW5pcC47z-WH4dvUTzTnqiMQk7C7fhcAcqWp9XU26UIHHPPuxzDuUQiaszqrfjOTR6gL7PHcEqBuUaSjK8Z3bc7pYaJ1v_yuKczsUXn-it2TRsMZ-LhR_8K2oG4Y4u1kmygfF5dR8iFZbvIZ1eoD_O859uOrRGYCcixW1YlWzLV5_czZZheuCDLmsoiJAICppbE5qcObamqFUKSyQhYuJQLISp-7Sogyw21Nji3g43jGNJ9i1LovTOx3g0bQ7FPWvF1P9nixfMVFsUIF6vclAvZ5gTT_8a4Ck3GMNWn4o_mYQ';  // Replace with your actual token
+    requestObj.addHeader('Authorization', 'Bearer ' + token);
+    requestObj.addHeader('Content-Type', 'application/json');
+    requestObj.setRequestBody(JSON.stringify(userData));
+
+    var httpResponse = requestObj.execute();
+    
+    // Check the response status code
+    if (httpResponse.getStatusCode() == 201) {
+        // Successfully created user
+        response.setStatus(201);
+        response.setBody(httpResponse.getBody());
+    } else {
+        // Handle error
+        response.setStatus(httpResponse.getStatusCode());
+        response.setBody(httpResponse.getBody());
+    }
+})(request, response);
+]]></operation_script>
+        <operation_uri>/api/x_1539348_usercrea/usercreationorbion/create</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/create</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2024-11-18 11:26:43</sys_created_on>
+        <sys_id>28d68048830612103a32ffc6feaad372</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>UserCreationRequest</sys_name>
+        <sys_package display_value="UserCreator" source="x_1539348_usercrea">084fff3f83f112103a32ffc6feaad358</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="UserCreator">084fff3f83f112103a32ffc6feaad358</sys_scope>
+        <sys_update_name>sys_ws_operation_28d68048830612103a32ffc6feaad372</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2024-11-18 12:39:46</sys_updated_on>
+        <web_service_definition display_value="UserCreationOrbion">3bb6c048830612103a32ffc6feaad310</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+    <sys_es_latest_script action="DELETE">
+        <id>28d68048830612103a32ffc6feaad372</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2024-11-18 11:26:42</sys_created_on>
+        <sys_id>2fa9c848830612103a32ffc6feaad35c</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2024-11-18 11:26:42</sys_updated_on>
+        <table>sys_ws_operation</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="UserCreator">084fff3f83f112103a32ffc6feaad358</application>
+        <file_path/>
+        <instance_id>8e49fcdd1b8e0a5078c7cb7b234bcbde</instance_id>
+        <instance_name>dev264800</instance_name>
+        <name>sys_ws_operation_28d68048830612103a32ffc6feaad372</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_ws_operation"&gt;&lt;sys_ws_operation action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;consumes&gt;application/json,application/xml,text/xml&lt;/consumes&gt;&lt;consumes_customized&gt;false&lt;/consumes_customized&gt;&lt;default_operation_uri/&gt;&lt;enforce_acl&gt;cf9d01d3e73003009d6247e603f6a990&lt;/enforce_acl&gt;&lt;http_method&gt;POST&lt;/http_method&gt;&lt;name&gt;UserCreationRequest&lt;/name&gt;&lt;operation_script&gt;&lt;![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+    // Get data from the form submission
+    var username = request.body.data.username;  // e.g., form field: username
+    var displayName = request.body.data.display_name;  // form field: display_name
+    var email = request.body.data.email;  // form field: email
+
+    // Build the SCIM payload
+    var userData = {
+        schemas: ["urn:ietf:params:scim:schemas:core:2.0:User"],
+        userName: username,
+        displayName: displayName,
+        active: true,
+        emails: [
+            {
+                value: email,
+                type: "work",
+                primary: true
+            }
+        ]
+    };
+
+    // Set up HTTP client and send request
+    var client = new GlideHTTPClient();
+    var url = 'https://earth-apis.my.evidian.com/scim/v2/api/Users';
+    var requestObj = new GlideHTTPRequest('POST', url);
+    
+    // Add the Authorization header with the token
+    var token = 'eyJraWQiOiJyc2EyNTZfc2lnIiwiYWxnIjoiUlMyNTYifQ.eyJhdXRoZW50aWNhdGlvbmxldmVsIjoiMTAiLCJzdWIiOiJld29pYzNWaUlpQTZJQ0poZVcxaGJtVXVhMkZpWW1GQVZYTmxjaUJFYVhKbFkzUnZjbmtpTEFvaWJtRnRaU0lnT2lBaVFYbHRZVzVsSUV0QlFrSkJJaXdLSW1kcGRtVnVYMjVoYldVaUlEb2dJa0Y1YldGdVpTSXNDaUptWVcxcGJIbGZibUZ0WlNJZ09pQWlTMEZDUWtFaUxBb2laVzFoYVd3aUlEb2dJbUY1YldGdVpTNXJZV0ppWVVCbGRtbGtaVzR1WTI5dElpd0tJbXh2WTJGc1pTSWdPaUFpWlc0aUxBb2ljSEpsWm1WeWNtVmtYM1Z6WlhKdVlXMWxJaUE2SUNKaGVXMWhibVV1YTJGaVltRWlMQW9pWjJWdVpHVnlJaUE2SUNKdFlXeGxJaXdLSW1selgyOXBaR05mWVdSdGFXNXBjM1J5WVhSdmNpSWdPaUJtWVd4elpRcDkiLCJhdXRoZW50aWNhdGlvbnBvbGljeW5hbWUiOiJBdXRoZW50aWNhdGlvbiB3aXRoIGNlcnRpZmljYXRlIiwiYXpwIjoiNTMxZGQ2YTUtMzcxYi00NjczLTgxYjMtNDMyYjcwNzEzNTY2Iiwic2NvcGUiOiJhZGRyZXNzIHBob25lIG9wZW5pZCBwcm9maWxlIGVtYWlsIiwiaXNzIjoiaHR0cHM6XC9cL2VhcnRoLWF1dGgubXkuZXZpZGlhbi5jb21cL2Nob2ljZVwvb2lkY1wvIiwiYXV0aGVudGljYXRpb250eXBlbmFtZSI6IkxQRl9QUklNX0FVVEhfQ0VSVElGSUNBVEUiLCJhdXRoZW50aWNhdGlvbnR5cGUiOiIzIiwiaWF0IjoxNzMxOTMzNTYxLCJqdGkiOiI5MGE2OWYwYS0zMzNiLTQ0YmQtYTY4NS1mYTQ2ODJjZjFkY2QifQ.pt39E49E7BqSKxKQ7v-bblrJHsNHxIbZJ0QMl_QqOqW5pcC47z-WH4dvUTzTnqiMQk7C7fhcAcqWp9XU26UIHHPPuxzDuUQiaszqrfjOTR6gL7PHcEqBuUaSjK8Z3bc7pYaJ1v_yuKczsUXn-it2TRsMZ-LhR_8K2oG4Y4u1kmygfF5dR8iFZbvIZ1eoD_O859uOrRGYCcixW1YlWzLV5_czZZheuCDLmsoiJAICppbE5qcObamqFUKSyQhYuJQLISp-7Sogyw21Nji3g43jGNJ9i1LovTOx3g0bQ7FPWvF1P9nixfMVFsUIF6vclAvZ5gTT_8a4Ck3GMNWn4o_mYQ';  // Replace with your actual token
+    requestObj.addHeader('Authorization', 'Bearer ' + token);
+    requestObj.addHeader('Content-Type', 'application/json');
+    requestObj.setRequestBody(JSON.stringify(userData));
+
+    var httpResponse = requestObj.execute();
+    
+    // Check the response status code
+    if (httpResponse.getStatusCode() == 201) {
+        // Successfully created user
+        response.setStatus(201);
+        response.setBody(httpResponse.getBody());
+    } else {
+        // Handle error
+        response.setStatus(httpResponse.getStatusCode());
+        response.setBody(httpResponse.getBody());
+    }
+})(request, response);
+]]&gt;&lt;/operation_script&gt;&lt;operation_uri&gt;/api/x_1539348_usercrea/usercreationorbion/create&lt;/operation_uri&gt;&lt;produces&gt;application/json,application/xml,text/xml&lt;/produces&gt;&lt;produces_customized&gt;false&lt;/produces_customized&gt;&lt;relative_path&gt;/create&lt;/relative_path&gt;&lt;request_example/&gt;&lt;requires_acl_authorization&gt;true&lt;/requires_acl_authorization&gt;&lt;requires_authentication&gt;true&lt;/requires_authentication&gt;&lt;requires_snc_internal_role&gt;true&lt;/requires_snc_internal_role&gt;&lt;short_description/&gt;&lt;sys_class_name&gt;sys_ws_operation&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2024-11-18 11:26:43&lt;/sys_created_on&gt;&lt;sys_id&gt;28d68048830612103a32ffc6feaad372&lt;/sys_id&gt;&lt;sys_mod_count&gt;1&lt;/sys_mod_count&gt;&lt;sys_name&gt;UserCreationRequest&lt;/sys_name&gt;&lt;sys_package display_value="UserCreator" source="x_1539348_usercrea"&gt;084fff3f83f112103a32ffc6feaad358&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="UserCreator"&gt;084fff3f83f112103a32ffc6feaad358&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ws_operation_28d68048830612103a32ffc6feaad372&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2024-11-18 12:39:46&lt;/sys_updated_on&gt;&lt;web_service_definition display_value="UserCreationOrbion"&gt;3bb6c048830612103a32ffc6feaad310&lt;/web_service_definition&gt;&lt;web_service_version/&gt;&lt;/sys_ws_operation&gt;&lt;sys_es_latest_script action="INSERT_OR_UPDATE"&gt;&lt;id&gt;28d68048830612103a32ffc6feaad372&lt;/id&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2024-11-18 11:26:42&lt;/sys_created_on&gt;&lt;sys_id&gt;2fa9c848830612103a32ffc6feaad35c&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2024-11-18 11:26:42&lt;/sys_updated_on&gt;&lt;table&gt;sys_ws_operation&lt;/table&gt;&lt;use_es_latest&gt;true&lt;/use_es_latest&gt;&lt;/sys_es_latest_script&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-1428663383</payload_hash>
+        <record_name>UserCreationRequest</record_name>
+        <reverted_from/>
+        <source>2f320480830612103a32ffc6feaad32b</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2024-11-18 12:39:46</sys_created_on>
+        <sys_id>7d6ad080838612103a32ffc6feaad394</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1933f49458f0000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2024-11-18 12:39:46</sys_updated_on>
+        <type>Scripted REST Resource</type>
+        <update_guid>316ad0807c861210a3a3485bc5051894</update_guid>
+        <update_guid_history>316ad0807c861210a3a3485bc5051894:-1428663383,77a9004ce7061210b6dafcc8974b57ca:-968247108</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2024-11-18 12:57:02</sys_created_on>
+        <sys_db_object display_value="" name="sys_ws_operation">sys_ws_operation</sys_db_object>
+        <sys_id>c1d71691690f4b20a40bf5788fb17fa1</sys_id>
+        <sys_metadata>28d68048830612103a32ffc6feaad372</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>UserCreationRequest</sys_name>
+        <sys_package display_value="UserCreator" source="x_1539348_usercrea">084fff3f83f112103a32ffc6feaad358</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="UserCreator">084fff3f83f112103a32ffc6feaad358</sys_scope>
+        <sys_scope_delete display_value="">6d306fdcbf3340c5a330b7f39f37df19</sys_scope_delete>
+        <sys_update_name>sys_ws_operation_28d68048830612103a32ffc6feaad372</sys_update_name>
+        <sys_update_version display_value="sys_ws_operation_28d68048830612103a32ffc6feaad372">7d6ad080838612103a32ffc6feaad394</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2024-11-18 12:57:02</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

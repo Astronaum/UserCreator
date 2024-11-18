@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl>cf9d01d3e73003009d6247e603f6a990</enforce_acl>
+        <http_method>POST</http_method>
+        <name>sendUserData</name>
+        <operation_script><![CDATA[(function process( /*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+    // Extract data from the request body
+    var username = request.body.data.userName;
+    var displayName = request.body.data.displayName;
+    var email = request.body.data.emails[0].value;
+
+    // Validate the incoming data
+    if (!username || !displayName || !email) {
+        response.setStatus(400); // Bad Request
+        response.setBody({ error: 'Missing required fields' });
+        return;
+    }
+
+    // Prepare the SCIM data for the user
+    var scimData = {
+        "schemas": ["urn:ietf:params:scim:schemas:core:2.0:User"],
+        "userName": username,
+        "displayName": displayName,
+        "active": true,
+        "emails": [
+            {
+                "value": email,
+                "type": "work",
+                "primary": true
+            }
+        ]
+    };
+
+    try {
+        // Create the HTTP client to send the request to the SCIM API
+        var client = new GlideHttpClient();
+        var scimRequest = new GlideHttpRequest();
+        scimRequest.setHttpMethod("POST");
+        scimRequest.setUrl("https://earth-apis.my.evidian.com/scim/v2/api/Users"); // Replace with your SCIM API URL
+        scimRequest.setHeader("Content-Type", "application/json");
+        scimRequest.setHeader("Authorization", "Bearer eyJraWQiOiJyc2EyNTZfc2lnIiwiYWxnIjoiUlMyNTYifQ.eyJhdXRoZW50aWNhdGlvbmxldmVsIjoiMTAiLCJzdWIiOiJld29pYzNWaUlpQTZJQ0poZVcxaGJtVXVhMkZpWW1GQVZYTmxjaUJFYVhKbFkzUnZjbmtpTEFvaWJtRnRaU0lnT2lBaVFYbHRZVzVsSUV0QlFrSkJJaXdLSW1kcGRtVnVYMjVoYldVaUlEb2dJa0Y1YldGdVpTSXNDaUptWVcxcGJIbGZibUZ0WlNJZ09pQWlTMEZDUWtFaUxBb2laVzFoYVd3aUlEb2dJbUY1YldGdVpTNXJZV0ppWVVCbGRtbGtaVzR1WTI5dElpd0tJbXh2WTJGc1pTSWdPaUFpWlc0aUxBb2ljSEpsWm1WeWNtVmtYM1Z6WlhKdVlXMWxJaUE2SUNKaGVXMWhibVV1YTJGaVltRWlMQW9pWjJWdVpHVnlJaUE2SUNKdFlXeGxJaXdLSW1selgyOXBaR05mWVdSdGFXNXBjM1J5WVhSdmNpSWdPaUJtWVd4elpRcDkiLCJhdXRoZW50aWNhdGlvbnBvbGljeW5hbWUiOiJBdXRoZW50aWNhdGlvbiB3aXRoIGNlcnRpZmljYXRlIiwiYXpwIjoiNTMxZGQ2YTUtMzcxYi00NjczLTgxYjMtNDMyYjcwNzEzNTY2Iiwic2NvcGUiOiJhZGRyZXNzIHBob25lIG9wZW5pZCBwcm9maWxlIGVtYWlsIiwiaXNzIjoiaHR0cHM6XC9cL2VhcnRoLWF1dGgubXkuZXZpZGlhbi5jb21cL2Nob2ljZVwvb2lkY1wvIiwiYXV0aGVudGljYXRpb250eXBlbmFtZSI6IkxQRl9QUklNX0FVVEhfQ0VSVElGSUNBVEUiLCJhdXRoZW50aWNhdGlvbnR5cGUiOiIzIiwiaWF0IjoxNzMxOTMzNTYxLCJqdGkiOiI5MGE2OWYwYS0zMzNiLTQ0YmQtYTY4NS1mYTQ2ODJjZjFkY2QifQ.pt39E49E7BqSKxKQ7v-bblrJHsNHxIbZJ0QMl_QqOqW5pcC47z-WH4dvUTzTnqiMQk7C7fhcAcqWp9XU26UIHHPPuxzDuUQiaszqrfjOTR6gL7PHcEqBuUaSjK8Z3bc7pYaJ1v_yuKczsUXn-it2TRsMZ-LhR_8K2oG4Y4u1kmygfF5dR8iFZbvIZ1eoD_O859uOrRGYCcixW1YlWzLV5_czZZheuCDLmsoiJAICppbE5qcObamqFUKSyQhYuJQLISp-7Sogyw21Nji3g43jGNJ9i1LovTOx3g0bQ7FPWvF1P9nixfMVFsUIF6vclAvZ5gTT_8a4Ck3GMNWn4o_mYQ"); // Replace with your API token
+        scimRequest.setRequestBody(JSON.stringify(scimData));
+
+        // Send the request to the SCIM API
+        var scimResponse = client.send(scimRequest);
+
+        // Check the response status and handle it
+        if (scimResponse.getStatusCode() === 201) {
+            response.setStatus(201); // Created
+            response.setBody({ message: 'User successfully created' });
+        } else {
+            response.setStatus(scimResponse.getStatusCode());
+            response.setBody({ error: 'Failed to create user', details: scimResponse.getBody() });
+        }
+
+    } catch (error) {
+        response.setStatus(500); // Internal Server Error
+        response.setBody({ error: 'An error occurred', details: error.message });
+    }
+})(request, response);
+]]></operation_script>
+        <operation_uri>/api/x_1539348_usercrea/scimusercreationapi</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>false</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2024-11-18 15:02:18</sys_created_on>
+        <sys_id>68797008830a12103a32ffc6feaad343</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>sendUserData</sys_name>
+        <sys_package display_value="UserCreator" source="x_1539348_usercrea">084fff3f83f112103a32ffc6feaad358</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="UserCreator">084fff3f83f112103a32ffc6feaad358</sys_scope>
+        <sys_update_name>sys_ws_operation_68797008830a12103a32ffc6feaad343</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2024-11-18 15:08:42</sys_updated_on>
+        <web_service_definition display_value="SCIMUserCreationAPI">6469f488830a12103a32ffc6feaad32b</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>68797008830a12103a32ffc6feaad343</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2024-11-18 15:02:18</sys_created_on>
+        <sys_id>710b7888830a12103a32ffc6feaad398</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2024-11-18 15:02:18</sys_updated_on>
+        <table>sys_ws_operation</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

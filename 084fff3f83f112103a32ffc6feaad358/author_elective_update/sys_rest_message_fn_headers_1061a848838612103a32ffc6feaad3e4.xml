@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_rest_message_fn_headers">
+    <sys_rest_message_fn_headers action="DELETE">
+        <name>Content-Type</name>
+        <rest_message_function display_value="">0461ac88838612103a32ffc6feaad39f</rest_message_function>
+        <sys_class_name>sys_rest_message_fn_headers</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2024-11-18 13:11:29</sys_created_on>
+        <sys_id>1061a848838612103a32ffc6feaad3e4</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Content-Type</sys_name>
+        <sys_package display_value="UserCreator" source="x_1539348_usercrea">084fff3f83f112103a32ffc6feaad358</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="UserCreator">084fff3f83f112103a32ffc6feaad358</sys_scope>
+        <sys_update_name>sys_rest_message_fn_headers_1061a848838612103a32ffc6feaad3e4</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2024-11-18 13:11:29</sys_updated_on>
+        <value>application/json</value>
+    </sys_rest_message_fn_headers>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="UserCreator">084fff3f83f112103a32ffc6feaad358</application>
+        <file_path/>
+        <instance_id>8e49fcdd1b8e0a5078c7cb7b234bcbde</instance_id>
+        <instance_name>dev264800</instance_name>
+        <name>sys_rest_message_fn_headers_1061a848838612103a32ffc6feaad3e4</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_rest_message_fn_headers"><sys_rest_message_fn_headers action="INSERT_OR_UPDATE"><name>Content-Type</name><rest_message_function display_value="">0461ac88838612103a32ffc6feaad39f</rest_message_function><sys_class_name>sys_rest_message_fn_headers</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2024-11-18 13:11:29</sys_created_on><sys_id>1061a848838612103a32ffc6feaad3e4</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Content-Type</sys_name><sys_package display_value="UserCreator" source="x_1539348_usercrea">084fff3f83f112103a32ffc6feaad358</sys_package><sys_policy/><sys_scope display_value="UserCreator">084fff3f83f112103a32ffc6feaad358</sys_scope><sys_update_name>sys_rest_message_fn_headers_1061a848838612103a32ffc6feaad3e4</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2024-11-18 13:11:29</sys_updated_on><value>application/json</value></sys_rest_message_fn_headers></record_update>]]></payload>
+        <payload_hash>133959538</payload_hash>
+        <record_name>Content-Type</record_name>
+        <reverted_from/>
+        <source>2f320480830612103a32ffc6feaad32b</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2024-11-18 13:11:29</sys_created_on>
+        <sys_id>1ea1acc8838612103a32ffc6feaad340</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1933f664ebc0000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2024-11-18 13:11:29</sys_updated_on>
+        <type>HTTP Headers</type>
+        <update_guid>12a1acc818861210c5946036408df140</update_guid>
+        <update_guid_history>12a1acc818861210c5946036408df140:133959538</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2024-11-18 13:33:48</sys_created_on>
+        <sys_db_object display_value="" name="sys_rest_message_fn_headers">sys_rest_message_fn_headers</sys_db_object>
+        <sys_id>9d056f36f763444582dec40e4eb5af91</sys_id>
+        <sys_metadata>1061a848838612103a32ffc6feaad3e4</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Content-Type</sys_name>
+        <sys_package display_value="UserCreator" source="x_1539348_usercrea">084fff3f83f112103a32ffc6feaad358</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="UserCreator">084fff3f83f112103a32ffc6feaad358</sys_scope>
+        <sys_scope_delete display_value="">6d306fdcbf3340c5a330b7f39f37df19</sys_scope_delete>
+        <sys_update_name>sys_rest_message_fn_headers_1061a848838612103a32ffc6feaad3e4</sys_update_name>
+        <sys_update_version display_value="sys_rest_message_fn_headers_1061a848838612103a32ffc6feaad3e4">1ea1acc8838612103a32ffc6feaad340</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2024-11-18 13:33:48</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>
